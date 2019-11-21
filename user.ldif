@@ -1,0 +1,22 @@
+dn: uid=Teo,ou=guerreros,dc=malakor,dc=sith
+objectClass:inetOrgPerson
+objectClass:shadowAccount
+objectClass:posixAccount
+cn:Teo
+sn:Pugna
+uid:Teo
+userPassword:Teo
+uidNumber:10000
+gidNumber:10000
+homeDirectory: /home/Teo
+shadowMax: 60
+shadowMin: 1
+shadowWarning: 7
+shadowInactive: 7
+shadowLastChange: 0
+
+dn: cn=Teo,ou=guerreros,dc=malakor,dc=sith
+objectClass: posixGroup
+cn: Teo
+gidNumber: 10000
+memberUid: Teo
