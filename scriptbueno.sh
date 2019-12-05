@@ -1,16 +1,19 @@
 #!/bin/bash
 #Declaramos las variables globales
-$uid
-$ou
-$dc
-$extension
-$csv_path
-$todo 
-let a
-echo "uid="$uid",ou="$ou",dc="$dc",dc="$extension",csv="$csv_path=$todo
+uid=""
+ou=""
+dc=""
+extension=""
+csv_path=""
+todo=""
+a=""
+
+#echo "uid="$uid",ou="$ou",dc="$dc",dc="$extension",csv="$csv_path=$todo
+
+echo "hasta dibukar"
 #Creamos el menu
 function dibujarMenu(){
-	OUTPUT="/tmp/csv.tmp"
+	INPUT="/tmp/menu.sh"
         dialog  --title "Parseador CSV a LDIF" \
                 --ok-label "Aceptar" \
                 --cancel-label "Cancelar" \
@@ -21,37 +24,31 @@ function dibujarMenu(){
                4  "Indica la extensión del servidor" \
                5  "Indica el nombre del fichero CSV" \
                6 "Guardar salida"  \
-	       0 "Salir" 2>/tmp/salida.tmp
-		a=$(cat /tmp/salida.tmp)
-		respose=$?
-		rm /tmp/csv.tmp
-                case $a in 
-			1)
-				pedirAdmin
-				exit 0
-                                ;;
-                        2)
-				pedirOu
-  				exit 0
-				;;
-		        3)	
+	       0 "Salir" 2>"${INPUT}"
 
-				pedirDomain
-				exit 0
-				;;
+		menuitem=$(<"${INPUT}")
+		echo $menuitem
+		sleep 1
+                case $menuitem in 
+			1)
+				pedirAdmin ;;
+                        2)
+				pedirOu 	;;
+		        3)
+				pedirDomain ;;
 			4)
-				pedirExt
-				exit 0
-				;;
+				pedirExt ;;
 			5)
-				pedirCsv
-				exit 0
-				;;
+				pedirCsv ;;
 			6)
-				salida	
+				salida
 				exit 0
 				;;
-			esac
+		esac
+
+
+echo "hasta pedir"
+#DESCRIPCION 
 function pedirAdmin(){
 		 respose=$?
 		 OUTPUT="/tmp/input.txt"	
@@ -63,6 +60,7 @@ function pedirAdmin(){
 		uid=$(cat $OUTPUT)
 		rm /tmp/input.txt
 }
+#DESCRIPCION 
 function pedirOu(){
 		respose=$? 
 	        OUTPUT="/tmp/input.txt"
@@ -74,7 +72,7 @@ function pedirOu(){
 		ou=$(cat $OUTPUT)
 		rm /tmp/input.txt
 		}
-
+#DESCRIPCION 
 function pedirDomain(){
                 respose=$? 
 		OUTPUT="/tmp/input.txt"
@@ -96,6 +94,7 @@ function pedirExt(){
 		echo "por ahora llevas" $todo 
 		extension=$(<$OUTPUT)
 		rm /tmp/input.txt
+#DESCRIPCION 
 function pedirCsv(){
         respose=$?
     	OUTPUT="/tmp/input.txt"
@@ -106,11 +105,11 @@ function pedirCsv(){
     	csv_path=$(cat $OUTPUT)
     	rm /tmp/input.txt
 }
+#DESCRIPCION 
 function salida(){
 	$todo >> salida.ldif
 }
 
-#while true
-#do
-#dibujarMenu
-#done
+
+
+echo "hasta aqui"
