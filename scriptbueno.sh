@@ -6,7 +6,8 @@ $dc
 $extension
 $csv_path
 $todo 
-echo "uid="$uid",ou="$ou",dc="$dc",dc="$extension",csv"$csv_path=$todo
+let a
+echo "uid="$uid",ou="$ou",dc="$dc",dc="$extension",csv="$csv_path=$todo
 #Creamos el menu
 function dibujarMenu(){
 	OUTPUT="/tmp/csv.tmp"
@@ -24,36 +25,65 @@ function dibujarMenu(){
 		a=$(cat /tmp/salida.tmp)
 		respose=$?
 		rm /tmp/csv.tmp
-}
+                case $a in 
+			1)
+				pedirAdmin
+				exit 0
+                                ;;
+                        2)
+				pedirOu
+  				exit 0
+				;;
+		        3)	
+
+				pedirDomain
+				exit 0
+				;;
+			4)
+				pedirExt
+				exit 0
+				;;
+			5)
+				pedirCsv
+				exit 0
+				;;
+			6)
+				salida	
+				exit 0
+				;;
+			esac
 function pedirAdmin(){
+		 respose=$?
 		 OUTPUT="/tmp/input.txt"	
 		 dialog	--title "Nombre del administrador" \
 		--ok-label "Aceptar" \
 		--cancel-label "Cancelar" \
 		--inputbox "Indica el nombre del administrador"8 60 2>$OUTPUT
 		echo "por ahora llevas" $todo 
-		uid=$(<$OUTPUT)
+		uid=$(cat $OUTPUT)
 		rm /tmp/input.txt
 }
-function pedirOu(){ 
-		 OUTPUT="/tmp/input.txt"
+function pedirOu(){
+		respose=$? 
+	        OUTPUT="/tmp/input.txt"
 		dialog       --title "Nombre de la unidad organizativa" \
                 --ok-label "Aceptar" \
                 --cancel-label "Cancelar" \
                 --inputbox "Indica el nombre de la unidad organizativa"8 60 2>$OUTPUT
 		echo "por ahora llevas" $todo 
-		ou=$(<$OUTPUT)
+		ou=$(cat $OUTPUT)
 		rm /tmp/input.txt
 		}
 
-function pedirDomain(){ 
+function pedirDomain(){
+                respose=$? 
 		OUTPUT="/tmp/input.txt"
 		dialog       --title "Nombre del dominio" \
                 --ok-label "Aceptar" \
                 --cancel-label "Cancelar" \
                 --inputbox "Indica el nombre del dominio"8 60 2>$OUTPUT
 		echo "por ahora llevas" $todo 
-		dc=$(<$OUTPUT)
+		dc=$(cat $OUTPUT)
 		rm /tmp/input.txt
 }
 
@@ -67,18 +97,20 @@ function pedirExt(){
 		extension=$(<$OUTPUT)
 		rm /tmp/input.txt
 function pedirCsv(){
+        respose=$?
     	OUTPUT="/tmp/input.txt"
     	dialog --title "El nombre del archivo CSV a parsear" \
     	--backtitle "Parseador de CSV a LDIP" \
     	--inputbox "Indica el nombre del archivo CSV que está en esta carpeta para parsear" 8 60 2>$OUTPUT
     	echo "por ahora llevas" $todo 
-    	csv_path=$(<$OUTPUT)
+    	csv_path=$(cat $OUTPUT)
     	rm /tmp/input.txt
 }
 function salida(){
 	$todo >> salida.ldif
 }
-	while true
-	do
-		dibujarMenu
-	done
+
+#while true
+#do
+#dibujarMenu
+#done
